@@ -1,11 +1,21 @@
 package main
 
 import (
-	"os"
+	"log"
+	"net/http"
 
-	cmd "github.com/ohmayank/hako/cmd"
+	"github.com/ohmayank/hako/internal/handlers"
+	"github.com/ohmayank/hako/internal/store"
 )
 
 func main() {
-	cmd.Main(os.Args)
+	s := store.NewFileStore("./.data")
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("PUT /objects/{bucket}/{key...}", handlers.PutObject(s))
+	mux.HandleFunc("GET /objects/{bucket}/{key...}", handlers.GetObject(s))
+	mux.HandleFunc("DELETE /objects/{bucket}/{key...}", handlers.DeleteObject(s))
+
+	log.Println("listening on :6060")
+	log.Fatal(http.ListenAndServe(":6060", mux))
 }
