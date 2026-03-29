@@ -46,7 +46,7 @@ func GetObject(s store.ObjectStore) http.HandlerFunc {
 			}
 
 			if errors.Is(err, os.ErrNotExist) {
-				http.Error(w, err.Error(), http.StatusNotFound)
+				http.Error(w, "object is not valid", http.StatusNotFound)
 				return
 			}
 
