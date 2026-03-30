@@ -14,7 +14,6 @@ import (
 type ObjectStore interface {
 	// Stores the contents of r at bucket/key
 	// Replaces the objext if it already exists
-	//FIX: does partial writes for now
 	Put(ctx context.Context, bucket, key string, r io.Reader) error
 
 	// Returns a reader for the object at bucket/key
